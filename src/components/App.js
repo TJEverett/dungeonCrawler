@@ -1,14 +1,14 @@
 import React from "react";
 import { BrowserRouter, Switch, Route, Redirect } from "react-router-dom";
+import Header from "./Header";
 
 function App() {
   //Testing Values
-  let userInfo = null;
-  // userInfo = {id: "123abc", admin: false};
-  // userInfo = {id: "123abc", admin: true};
+  let userInfo = null; //Fake user (default logged out)
+  // userInfo = {id: "123abc", admin: false}; //Fake user update (General user)
+  // userInfo = {id: "123abc", admin: true}; //Fake user update (Admin user)
 
-
-
+  //Render Logic
   function CheckAdminToLoad() {
     let action = null;
     if(userInfo === null){
@@ -21,9 +21,10 @@ function App() {
     return action;
   }
 
+  //Return Logic
   return(
     <BrowserRouter>
-      <h1>Header</h1>
+      <Header user={userInfo}/>
       <Switch>
         <Route path="/Create">
           {CheckAdminToLoad()}
