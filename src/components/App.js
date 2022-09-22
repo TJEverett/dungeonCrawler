@@ -1,5 +1,6 @@
 import React from "react";
 import { BrowserRouter, Switch, Route, Redirect } from "react-router-dom";
+import Account from "./Account";
 import Header from "./Header";
 
 function App() {
@@ -33,7 +34,7 @@ function App() {
           <p>Game Menu</p>
         </Route>
         <Route path="/User">
-          <p>Log In/Out Here</p>
+          <Account user={userInfo} />
         </Route>
         <Route path="/">
           <Redirect to="/Create" />
