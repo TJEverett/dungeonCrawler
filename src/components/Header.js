@@ -49,6 +49,7 @@ function Header(props){
           <Link to="/User"><button>Account</button></Link>
         </div>
       </div>
+      <hr />
     </React.Fragment>
   )
 }
