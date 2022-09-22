@@ -1,6 +1,7 @@
 import React from "react";
 import { BrowserRouter, Switch, Route, Redirect } from "react-router-dom";
 import Account from "./Account";
+import GameController from "./GameController";
 import Header from "./Header";
 
 function App() {
@@ -31,7 +32,7 @@ function App() {
           {CheckAdminToLoad()}
         </Route>
         <Route path="/Game">
-          <p>Game Menu</p>
+          <GameController user={userInfo} />
         </Route>
         <Route path="/User">
           <Account user={userInfo} />
