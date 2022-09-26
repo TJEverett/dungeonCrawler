@@ -1,9 +1,18 @@
 import React from "react";
 import PropTypes from "prop-types";
+import fakeDataCalls from "../dummyData/database-response.json";
+import GameOptionSelector from "./GameOptionSelector";
 
 function GameController(props){
   //Temp Values
   const optionsSelected = false;
+  // const optionsSelected = true;
+  const mapArray = fakeDataCalls.mapResponseArray;
+  const enemyArray = fakeDataCalls.enemyResponseArray;
+  let characterData = null;
+  if(props.user !== null){
+    characterData = fakeDataCalls.characterResponse.filter(char => char.userId === props.user.id)[0] || null;
+  }
 
   //Style Logic
   const styleCenter = {
@@ -20,12 +29,12 @@ function GameController(props){
       </React.Fragment>
     );
   }
-  if(props.user !== null && optionsSelected === false){
+  if(props.user !== null && (optionsSelected === false || characterData === null)){
     return(
-      <h1>Options Route</h1>
+      <GameOptionSelector character={characterData} />
     );
   }
-  if(props.user !== null && optionsSelected === true){
+  if(props.user !== null && (optionsSelected === true && characterData !== null)){
     return(
       <h1>Game Board</h1>
     );

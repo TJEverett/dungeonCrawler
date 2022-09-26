@@ -7,8 +7,8 @@ import Header from "./Header";
 function App() {
   //Testing Values
   let userInfo = null; //Fake user (default logged out)
-  // userInfo = {id: "123abc", admin: false}; //Fake user update (General user)
-  // userInfo = {id: "123abc", admin: true}; //Fake user update (Admin user)
+  userInfo = {id: "1234abcd", admin: false}; //Fake user update (General user)
+  // userInfo = {id: "1234abcd", admin: true}; //Fake user update (Admin user)
 
   //Render Logic
   function CheckAdminToLoad() {
