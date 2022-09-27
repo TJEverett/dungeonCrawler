@@ -1,5 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
+import CharacterDisplay from "./CharacterDisplay";
 
 function GameOptionSelector(props){
   //Style Logic
@@ -33,7 +34,7 @@ function GameOptionSelector(props){
         </form>
       );
     }else{
-      return(<h1>Character Data</h1>);
+      return(<CharacterDisplay simple={false} character={props.character} buttonFunc={tempFunction} />);
     }
   }
 
@@ -51,7 +52,7 @@ function GameOptionSelector(props){
   return(
     <React.Fragment>
       <div style={styleTable}>
-        <div style={styleCenter}>
+        <div>
           {characterRender()}
         </div>
         <div style={styleCenter}>
