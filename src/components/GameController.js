@@ -2,11 +2,12 @@ import React from "react";
 import PropTypes from "prop-types";
 import fakeDataCalls from "../dummyData/database-response.json";
 import GameOptionSelector from "./GameOptionSelector";
+import GameBoardController from "./GameBoardController";
 
 function GameController(props){
   //Temp Values
-  const optionsSelected = false;
-  // const optionsSelected = true;
+  // const optionsSelected = false;
+  const optionsSelected = true;
   const mapArray = fakeDataCalls.mapResponseArray;
   const enemyArray = fakeDataCalls.enemyResponseArray;
   let characterData = null;
@@ -36,7 +37,9 @@ function GameController(props){
   }
   if(props.user !== null && (optionsSelected === true && characterData !== null)){
     return(
-      <h1>Game Board</h1>
+      <React.Fragment>
+        <GameBoardController enemyList={enemyArray} map={mapArray[0]} character={{...characterData, healthCurrent: 100}} />
+      </React.Fragment>
     );
   }
 }
