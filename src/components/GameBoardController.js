@@ -1,6 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
 import CharacterDisplay from "./CharacterDisplay";
+import CustomIFrame from "./CustomIFrame";
+import GameMap from "./GameMap";
 
 class GameBoardController extends React.Component{
   constructor(props){
@@ -176,7 +178,9 @@ class GameBoardController extends React.Component{
           </div>
           <div style={{...tablePosition(1, 3), ...this.styles.tables.middle}}>
             <div style={tablePosition(2, 1)}>
-              <p>Map</p>
+              <CustomIFrame title='game Map' style={{height: "34vh", width: "80vw"}}>
+                <GameMap gameBoard={this.state.map} playerPosition={this.state.playerPosition} size={this.state.mapSize} />
+              </CustomIFrame>
             </div>
           </div>
           <div style={{...tablePosition(1, 5), ...this.styles.tables.bottom}}>
