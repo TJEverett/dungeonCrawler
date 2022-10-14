@@ -3,26 +3,31 @@ import PropTypes from "prop-types";
 
 function GameMap(props){
   //Internal Variables
-  let gameMap = props.gameBoard;
+  let gameMap = JSON.parse(JSON.stringify(props.gameBoard));
   gameMap[props.playerPosition[0]][props.playerPosition[1]] = "P";
 
   //Style Logic
   const verticalTable = {
     display: "grid",
-    gridTemplateRows: "1fr ".repeat(props.size)
+    gridTemplateRows: "50px ".repeat(props.size)
   };
   const horizontalTable = {
     display: "grid",
-    gridTemplateColumns: "1fr ".repeat(props.size)
+    gridTemplateColumns: "50px ".repeat(props.size)
   };
   const styleFrame = {
-    border: "1px solid black"
+    border: "1px solid black",
+    height: "50px",
+    width: "50px",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center"
   };
 
   //Render Functions
   function fillCell(piece){
     if(piece === "X" || piece === "E" || piece === "U" || piece === "D" || piece === "P"){
-      return(<p><strong>{piece}</strong></p>);
+      return(<strong>{piece}</strong>);
     }else{
       return(null);
     }
@@ -37,7 +42,7 @@ function GameMap(props){
             <div style={horizontalTable} key={"vertical-" + index}>
               {verticalEntry.map((horizontalCell, index) => {
                 return(
-                 <div className="centered" style={styleFrame} key={"horizontal-" + index}>
+                 <div style={styleFrame} key={"horizontal-" + index}>
                   {fillCell(horizontalCell)}
                 </div>
                 );

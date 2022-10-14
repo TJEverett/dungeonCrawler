@@ -66,7 +66,7 @@ class GameBoardController extends React.Component{
         display: "grid",
         gridTemplateColumns: "100%",
         gridTemplateRows: "24% 2% 43% 2% 29%",
-        height: "80vh"
+        height: "100vh"
       },
       top: {
         display: "grid",
@@ -131,7 +131,18 @@ class GameBoardController extends React.Component{
   }
   movePlayer(direction){
     const directionCleansed = direction.toLowerCase();
+    let tempPosition = this.state.playerPosition;
     console.log("player moved " + directionCleansed);
+    if(directionCleansed === "up"){
+      tempPosition = [(tempPosition[0] - 1), tempPosition[1]];
+    }else if(directionCleansed === "down"){
+      tempPosition = [(tempPosition[0] + 1), tempPosition[1]];
+    }else if(directionCleansed === "left"){
+      tempPosition = [tempPosition[0], (tempPosition[1] - 1)];
+    }else if(directionCleansed === "right"){
+      tempPosition = [tempPosition[0], (tempPosition[1] + 1)];
+    }
+    this.setState({playerPosition: tempPosition});
   }
 
 
@@ -178,7 +189,7 @@ class GameBoardController extends React.Component{
           </div>
           <div style={{...tablePosition(1, 3), ...this.styles.tables.middle}}>
             <div style={tablePosition(2, 1)}>
-              <CustomIFrame title='game Map' style={{height: "34vh", width: "80vw"}}>
+              <CustomIFrame title='game Map' style={{height: "43vh", width: "80vw"}}>
                 <GameMap gameBoard={this.state.map} playerPosition={this.state.playerPosition} size={this.state.mapSize} />
               </CustomIFrame>
             </div>
