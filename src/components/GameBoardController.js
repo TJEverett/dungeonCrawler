@@ -188,6 +188,13 @@ class GameBoardController extends React.Component{
             </div>
           </div>
           <div style={{...tablePosition(1, 3), ...this.styles.tables.middle}}>
+            <div style={tablePosition(1, 1)}>
+              <p>P: Player</p>
+              <p>X: Wall</p>
+              <p>E: Enemy</p>
+              <p>U: Entrance</p>
+              <p>D: Exit</p>
+            </div>
             <div style={tablePosition(2, 1)}>
               <CustomIFrame title='game Map' style={{height: "43vh", width: "80vw"}}>
                 <GameMap gameBoard={this.state.map} playerPosition={this.state.playerPosition} size={this.state.mapSize} />
