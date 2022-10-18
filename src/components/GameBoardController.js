@@ -87,11 +87,24 @@ class GameBoardController extends React.Component{
         display: "grid",
         gridTemplateColumns: "auto 5vh 7vh 5vh auto",
         gridTemplateRows: "auto 5vh 7vh 5vh auto"
+      },
+      attack: {
+        display: "grid",
+        gridTemplateColumns: "100%",
+        gridTemplateRows: "auto auto 5vh auto 5vh auto 5vh auto auto"
       }
     }
   };
 
   //Combat Logic
+  pickEnemy(){
+    const min = 0;
+    const max = this.props.enemyList.length;
+    const roll = (Math.floor(Math.random() * max) + min);
+    let enemy = JSON.parse(JSON.stringify(this.props.enemyList[roll]));
+    enemy.healthCurrent = enemy.healthMax;
+    return enemy;
+  }
 
   //Movement Logic
   checkMovePossible(direction){
@@ -129,6 +142,15 @@ class GameBoardController extends React.Component{
     }
     return result;
   }
+  engageIfEnemy(locationArray){
+    const newTile = this.state.map[locationArray[0]][locationArray[1]];
+    console.log("newTile: " + newTile);
+    if(newTile === "E"){
+      console.log("Battle Start");
+      const enemy = this.pickEnemy();
+      this.setState({battleMode: true, enemyStats: enemy});
+    }
+  }
   movePlayer(direction){
     const directionCleansed = direction.toLowerCase();
     let tempPosition = this.state.playerPosition;
@@ -142,6 +164,7 @@ class GameBoardController extends React.Component{
     }else if(directionCleansed === "right"){
       tempPosition = [tempPosition[0], (tempPosition[1] + 1)];
     }
+    this.engageIfEnemy(tempPosition);
     this.setState({playerPosition: tempPosition});
   }
 
@@ -149,7 +172,7 @@ class GameBoardController extends React.Component{
   //Render Function Logic
   buildArrow(direction, stylePosition){
     const directionCleansed = direction.toLowerCase();
-    if(this.checkMovePossible(directionCleansed)){
+    if(this.checkMovePossible(directionCleansed) && this.state.battleMode === false){
       if(directionCleansed === "up"){
         return(<div className="centered" style={stylePosition} onClick={() => this.movePlayer("up")}><div style={this.styles.arrows.up}></div></div>);
       }else if(directionCleansed === "down"){
@@ -158,6 +181,18 @@ class GameBoardController extends React.Component{
         return(<div className="centered" style={stylePosition} onClick={() => this.movePlayer("left")}><div style={this.styles.arrows.left}></div></div>);
       }else if(directionCleansed === "right"){
         return(<div className="centered" style={stylePosition} onClick={() => this.movePlayer("right")}><div style={this.styles.arrows.right}></div></div>);
+      }
+    }
+  }
+  buildAttacks(attackType, stylePosition){
+    const attackCleansed = attackType.toLowerCase();
+    if(this.state.battleMode === true){
+      if(attackCleansed === "melee"){
+        return(<div className="centered" style={stylePosition}><button>MELEE ATTACK</button></div>);
+      }else if(attackCleansed === "ranged"){
+        return(<div className="centered" style={stylePosition}><button>RANGED ATTACK</button></div>);
+      }else if(attackCleansed === "magic"){
+        return(<div className="centered" style={stylePosition}><button>MAGIC ATTACK</button></div>);
       }
     }
   }
@@ -202,8 +237,10 @@ class GameBoardController extends React.Component{
             </div>
           </div>
           <div style={{...tablePosition(1, 5), ...this.styles.tables.bottom}}>
-            <div style={tablePosition(2, 1)}>
-              <p>Attacks</p>
+            <div style={{...tablePosition(2, 1), ...this.styles.tables.attack}}>
+              {this.buildAttacks("melee", tablePosition(1, 3))}
+              {this.buildAttacks("ranged", tablePosition(1, 5))}
+              {this.buildAttacks("magic", tablePosition(1, 7))}
             </div>
             <div style={{...tablePosition(4, 1), ...this.styles.tables.movement}}>
               {this.buildArrow("up", tablePosition(3, 2))}

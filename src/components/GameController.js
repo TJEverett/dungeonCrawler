@@ -38,7 +38,7 @@ function GameController(props){
   if(props.user !== null && (optionsSelected === true && characterData !== null)){
     return(
       <React.Fragment>
-        <GameBoardController enemyList={enemyArray} map={mapArray[0]} character={{...characterData, healthCurrent: 100}} />
+        <GameBoardController enemyList={enemyArray} map={mapArray[2]} character={{...characterData, healthCurrent: 100}} />
       </React.Fragment>
     );
   }
