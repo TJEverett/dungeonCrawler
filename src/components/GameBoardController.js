@@ -105,6 +105,17 @@ class GameBoardController extends React.Component{
     enemy.healthCurrent = enemy.healthMax;
     return enemy;
   }
+  attackRoll(aim, dodge){
+    const hitChance = aim / (aim + dodge);
+    const hitRoll = Math.random();
+    const hit = hitRoll >= hitChance;
+    return hit;
+  }
+  damageRoll(min, max){
+    const damage = Math.round((Math.random() * (max - min)) + min);
+    return damage;
+  }
+
 
   //Movement Logic
   checkMovePossible(direction){
