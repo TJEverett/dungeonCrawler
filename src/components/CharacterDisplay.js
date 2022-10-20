@@ -49,7 +49,7 @@ function CharacterDisplay(props){
             <p>{props.character.name}</p>
           </div>
           <div style={styleCol(2)}>
-            <CharacterHealthBar healthMax={props.character.healthMax} healthCurrent={props.character.healthCurrent} />
+            <CharacterHealthBar healthMax={props.character.health.max} healthCurrent={props.character.health.current} />
           </div>
         </div>
       </React.Fragment>
@@ -66,15 +66,21 @@ CharacterDisplay.propTypes = {
 CharacterDisplay.defaultProps = {
   character: {
     name: "",
-    healthMax: 1,
-    healthCurrent: 0,
-    meleeAim: 0,
-    meleeDodge: 0,
-    rangeAim: 0,
-    rangeDodge: 0,
-    magicAim: 0,
-    magicDodge: 0,
-    killCount: 0
+    killCount: 0,
+    health: {
+      max: 1,
+      current: 0
+    },
+    aim: {
+      melee: 0,
+      range: 0,
+      magic: 0
+    },
+    dodge: {
+      melee: 0,
+      range: 0,
+      magic: 0
+    }
 },
   buttonFunc: () => {console.log("no button passed to CharacterDisplay component")},
   simple: true

@@ -113,40 +113,61 @@
     {
       "difficulty": 1,
       "name": "snail",
-      "healthMax": 15,
-      "meleeAim": 1,
-      "rangeAim": 0,
-      "magicAim": 0,
       "attackStyle": "melee",
-      "meleeDodge": 2,
-      "rangeDodge": 3,
-      "magicDodge": 1
+      "health": {
+        "max": 15,
+        "current": 15
+      },
+      "aim": {
+        "melee": 1,
+        "range": 0,
+        "magic": 0
+      },
+      "dodge": {
+        "melee": 2,
+        "range": 3,
+        "magic": 1
+      }
     },
     {
       "difficulty": 1,
       "name": "lobster",
-      "healthMax": 30,
-      "meleeAim": 5,
-      "rangeAim": 0,
-      "magicAim": 0,
       "attackStyle": "melee",
-      "meleeDodge": 2,
-      "rangeDodge": 2,
-      "magicDodge": 2
+      "health": {
+        "max": 30,
+        "current": 30
+      },
+      "aim": {
+        "melee": 5,
+        "range": 0,
+        "magic": 0
+      },
+      "dodge": {
+        "melee": 2,
+        "range": 2,
+        "magic": 2
+      }
     }
   ],
   "characterResponse": [
     {
       "userId": "1234abcd",
       "name": "Hiro",
-      "healthMax": 100,
-      "meleeAim": 1,
-      "meleeDodge": 1,
-      "rangeAim": 1,
-      "rangeDodge": 1,
-      "magicAim": 1,
-      "magicDodge": 1,
-      "killCount": 0
+      "killCount": 0,
+      "health": {
+        "max": 100,
+        "current": 100
+      },
+      "aim": {
+        "melee": 1,
+        "range": 1,
+        "magic": 1
+      },
+      "dodge": {
+        "melee": 1,
+        "range": 1,
+        "magic": 1
+      }
     }
   ]
 }

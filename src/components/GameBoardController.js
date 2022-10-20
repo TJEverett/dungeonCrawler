@@ -102,7 +102,6 @@ class GameBoardController extends React.Component{
     const max = this.props.enemyList.length;
     const roll = (Math.floor(Math.random() * max) + min);
     let enemy = JSON.parse(JSON.stringify(this.props.enemyList[roll]));
-    enemy.healthCurrent = enemy.healthMax;
     return enemy;
   }
   attackRoll(aim, dodge){

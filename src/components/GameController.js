@@ -6,8 +6,8 @@ import GameBoardController from "./GameBoardController";
 
 function GameController(props){
   //Temp Values
-  // const optionsSelected = false;
-  const optionsSelected = true;
+  const optionsSelected = false;
+  // const optionsSelected = true;
   const mapArray = fakeDataCalls.mapResponseArray;
   const enemyArray = fakeDataCalls.enemyResponseArray;
   let characterData = null;
@@ -38,7 +38,7 @@ function GameController(props){
   if(props.user !== null && (optionsSelected === true && characterData !== null)){
     return(
       <React.Fragment>
-        <GameBoardController enemyList={enemyArray} map={mapArray[2]} character={{...characterData, healthCurrent: 100}} />
+        <GameBoardController enemyList={enemyArray} map={mapArray[2]} character={characterData} />
       </React.Fragment>
     );
   }
