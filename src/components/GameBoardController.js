@@ -114,6 +114,40 @@ class GameBoardController extends React.Component{
     const damage = Math.round((Math.random() * (max - min)) + min);
     return damage;
   }
+  checkDead(character){
+    let result = false;
+    if(character.health.current < 1){
+      result = true;
+    }
+    return result;
+  }
+  attackTurn(attacker, defender, attackType){
+    const hitSuccess = this.attackRoll(attacker.aim[attackType], defender.dodge[attackType]);
+    let defenderReturn = JSON.parse(JSON.stringify(defender));
+    if(hitSuccess){
+      const damageDone = this.damageRoll(1, 10);
+      defenderReturn.health.current = defenderReturn.health.current - damageDone;
+    }
+    return defenderReturn;
+  }
+  attackSync(playerAttack){
+    const enemyAttack = this.state.enemyStats.attackStyle;
+    let enemyUpdate = this.attackTurn(this.state.playerStats, this.state.enemyStats, playerAttack);
+    let playerUpdate = this.attackTurn(this.state.enemyStats, this.state.playerStats, enemyAttack);
+    if(this.checkDead(enemyUpdate) === true){
+      playerUpdate.killCount += 1;
+      this.setState({
+        playerStats: playerUpdate,
+        enemyStats: null,
+        battleMode: false
+      });
+    }else{
+      this.setState({
+        playerStats: playerUpdate,
+        enemyStats: enemyUpdate
+      });
+    }
+  }
 
 
   //Movement Logic
@@ -198,11 +232,11 @@ class GameBoardController extends React.Component{
     const attackCleansed = attackType.toLowerCase();
     if(this.state.battleMode === true){
       if(attackCleansed === "melee"){
-        return(<div className="centered" style={stylePosition}><button>MELEE ATTACK</button></div>);
-      }else if(attackCleansed === "ranged"){
-        return(<div className="centered" style={stylePosition}><button>RANGED ATTACK</button></div>);
+        return(<div className="centered" style={stylePosition}><button onClick={() => this.attackSync("melee")}>MELEE ATTACK</button></div>);
+      }else if(attackCleansed === "range"){
+        return(<div className="centered" style={stylePosition}><button onClick={() => this.attackSync("range")}>RANGED ATTACK</button></div>);
       }else if(attackCleansed === "magic"){
-        return(<div className="centered" style={stylePosition}><button>MAGIC ATTACK</button></div>);
+        return(<div className="centered" style={stylePosition}><button onClick={() => this.attackSync("magic")}>MAGIC ATTACK</button></div>);
       }
     }
   }
@@ -249,7 +283,7 @@ class GameBoardController extends React.Component{
           <div style={{...tablePosition(1, 5), ...this.styles.tables.bottom}}>
             <div style={{...tablePosition(2, 1), ...this.styles.tables.attack}}>
               {this.buildAttacks("melee", tablePosition(1, 3))}
-              {this.buildAttacks("ranged", tablePosition(1, 5))}
+              {this.buildAttacks("range", tablePosition(1, 5))}
               {this.buildAttacks("magic", tablePosition(1, 7))}
             </div>
             <div style={{...tablePosition(4, 1), ...this.styles.tables.movement}}>
@@ -275,14 +309,21 @@ GameBoardController.defaultProps = {
   enemyList: [{
     difficulty: 1,
     name: "",
-    healthMax: 1,
-    meleeAim: 0,
-    rangeAim: 0,
-    magicAim: 0,
     attackStyle: "melee",
-    meleeDodge: 0,
-    rangeDodge: 0,
-    magicDodge: 0
+    health: {
+      max: 1,
+      current: 1
+    },
+    aim: {
+      melee: 0,
+      range: 0,
+      magic: 0
+    },
+    dodge: {
+      melee: 0,
+      range: 0,
+      magic: 0
+    }
   }],
   map: {
     size: 3,
@@ -294,15 +335,21 @@ GameBoardController.defaultProps = {
   },
   character: {
     name: "",
-    healthMax: 1,
-    healthCurrent: 0,
-    meleeAim: 0,
-    meleeDodge: 0,
-    rangeAim: 0,
-    rangeDodge: 0,
-    magicAim: 0,
-    magicDodge: 0,
-    killCount: 0
+    killCount: 0,
+    health: {
+      max: 1,
+      current: 0
+    },
+    aim: {
+      melee: 0,
+      range: 0,
+      magic: 0
+    },
+    dodge: {
+      melee: 0,
+      range: 0,
+      magic: 0
+    }
   }
 }
 

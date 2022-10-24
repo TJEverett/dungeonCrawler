@@ -6,8 +6,8 @@ import GameBoardController from "./GameBoardController";
 
 function GameController(props){
   //Temp Values
-  const optionsSelected = false;
-  // const optionsSelected = true;
+  // const optionsSelected = false;
+  const optionsSelected = true;
   const mapArray = fakeDataCalls.mapResponseArray;
   const enemyArray = fakeDataCalls.enemyResponseArray;
   let characterData = null;
