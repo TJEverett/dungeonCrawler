@@ -1,7 +1,9 @@
 import React from "react";
 import PropTypes from "prop-types";
 import CharacterDisplay from "./CharacterDisplay";
+import CharacterLevelUp from "./CharacterLevelUp";
 import CustomIFrame from "./CustomIFrame";
+import CustomModal from "./CustomModal";
 import GameMap from "./GameMap";
 
 class GameBoardController extends React.Component{
@@ -13,7 +15,8 @@ class GameBoardController extends React.Component{
       playerPosition: [0, 0],
       battleMode: false,
       playerStats: props.character,
-      enemyStats: null
+      enemyStats: null,
+      showLevelUp: false
     };
   }
 
@@ -96,6 +99,18 @@ class GameBoardController extends React.Component{
     }
   };
 
+
+  //Modal Functions
+  modalShowLevelUp(){
+    console.log("showing level up modal");
+    this.setState({ showLevelUp: true });
+  }
+  modalHideLevelUp(){
+    console.log("hiding level up modal");
+    this.setState({ showLevelUp: false });
+  }
+
+
   //Combat Logic
   pickEnemy(){
     const min = 0;
@@ -141,11 +156,47 @@ class GameBoardController extends React.Component{
         enemyStats: null,
         battleMode: false
       });
+      if(playerUpdate.killCount >= 10){
+        this.modalShowLevelUp();
+      }
     }else{
       this.setState({
         playerStats: playerUpdate,
         enemyStats: enemyUpdate
       });
+    }
+  }
+  levelUpStat(stat){
+    console.log(stat);
+    let playerUpdate = JSON.parse(JSON.stringify(this.state.playerStats));
+    if(playerUpdate.killCount >= 10){
+      if(stat === "health"){
+        playerUpdate.health.max += 5;
+        playerUpdate.health.current += 5;
+        playerUpdate.killCount = playerUpdate.killCount - 10;
+      }else if(stat === "aimMelee"){
+        playerUpdate.aim.melee += 1;
+        playerUpdate.killCount = playerUpdate.killCount - 10;
+      }else if(stat === "aimRange"){
+        playerUpdate.aim.range += 1;
+        playerUpdate.killCount = playerUpdate.killCount - 10;
+      }else if(stat === "aimMagic"){
+        playerUpdate.aim.magic += 1;
+        playerUpdate.killCount = playerUpdate.killCount - 10;
+      }else if(stat === "dodgeMelee"){
+        playerUpdate.dodge.melee += 1;
+        playerUpdate.killCount = playerUpdate.killCount - 10;
+      }else if(stat === "dodgeRange"){
+        playerUpdate.dodge.range += 1;
+        playerUpdate.killCount = playerUpdate.killCount - 10;
+      }else if(stat === "dodgeMagic"){
+        playerUpdate.dodge.range += 1;
+        playerUpdate.killCount = playerUpdate.killCount - 10;
+      }
+      this.setState({ playerStats: playerUpdate });
+      if(playerUpdate.killCount < 10){
+        this.modalHideLevelUp();
+      }
     }
   }
 
@@ -257,6 +308,9 @@ class GameBoardController extends React.Component{
     //Return Logic
     return(
       <React.Fragment>
+        <CustomModal show={this.state.showLevelUp} handleClose={this.modalHideLevelUp}>{/* ANON function to prevent errors due to scope of "this" seeing other component */}
+          <CharacterLevelUp character={this.state.playerStats} statPicker={(stat) => this.levelUpStat(stat)} />
+        </CustomModal>
         <div style={this.styles.tables.vertical}>
           <div style={{...tablePosition(1, 1), ...this.styles.tables.top}}>
             <div style={tablePosition(2, 1)}>
