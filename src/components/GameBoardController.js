@@ -9,12 +9,14 @@ import GameMap from "./GameMap";
 class GameBoardController extends React.Component{
   constructor(props){
     super(props);
+    const startingMap = JSON.parse(JSON.stringify(props.map));
+    const startingCharacter = JSON.parse(JSON.stringify(props.character))
     this.state = {
-      map: props.map.map,
-      mapSize: props.map.size,
+      map: startingMap.map,
+      mapSize: startingMap.size,
       playerPosition: [0, 0],
       battleMode: false,
-      playerStats: props.character,
+      playerStats: startingCharacter,
       enemyStats: null,
       showLevelUp: false
     };
@@ -246,6 +248,25 @@ class GameBoardController extends React.Component{
       this.setState({battleMode: true, enemyStats: enemy});
     }
   }
+  restartFloor(){
+    const newMap = this.props.map.map;
+    const newPlayerStat = this.props.character;
+    let startingPosition = [0, 0];
+    for(let a = 0; a < newMap.length; a++){
+      for(let b = 0; b < newMap[a].length; b++){
+        if(this.state.map[a][b] === "U"){
+          startingPosition = [a, b];
+        }
+      }
+    }
+    this.setState({
+      map: newMap,
+      playerPosition: startingPosition,
+      battleMode: false,
+      playerStats: newPlayerStat,
+      enemyStats: null
+    });
+  }
   movePlayer(direction){
     const directionCleansed = direction.toLowerCase();
     let tempPosition = this.state.playerPosition;
@@ -259,8 +280,12 @@ class GameBoardController extends React.Component{
     }else if(directionCleansed === "right"){
       tempPosition = [tempPosition[0], (tempPosition[1] + 1)];
     }
-    this.engageIfEnemy(tempPosition);
-    this.setState({playerPosition: tempPosition});
+    if(this.state.map[tempPosition[0]][tempPosition[1]] !== "D"){
+      this.engageIfEnemy(tempPosition);
+      this.setState({playerPosition: tempPosition});
+    }else{
+      this.restartFloor();
+    }
   }
 
 
