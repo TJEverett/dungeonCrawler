@@ -18,7 +18,8 @@ class GameBoardController extends React.Component{
       battleMode: false,
       playerStats: startingCharacter,
       enemyStats: null,
-      showLevelUp: false
+      showLevelUp: false,
+      showGameOver: false
     };
   }
 
@@ -111,6 +112,15 @@ class GameBoardController extends React.Component{
     console.log("hiding level up modal");
     this.setState({ showLevelUp: false });
   }
+  modalShowGameOver(){
+    console.log("showing game over modal");
+    this.setState({ showGameOver: true });
+  }
+  modalHideGameOver(){
+    this.restartFloor();
+    console.log("hiding game over modal");
+    this.setState({ showGameOver: false });
+  }
 
 
   //Combat Logic
@@ -151,7 +161,9 @@ class GameBoardController extends React.Component{
     const enemyAttack = this.state.enemyStats.attackStyle;
     let enemyUpdate = this.attackTurn(this.state.playerStats, this.state.enemyStats, playerAttack);
     let playerUpdate = this.attackTurn(this.state.enemyStats, this.state.playerStats, enemyAttack);
-    if(this.checkDead(enemyUpdate) === true){
+    if(this.checkDead(playerUpdate) === true){
+      this.modalShowGameOver();
+    }else if(this.checkDead(enemyUpdate) === true){
       playerUpdate.killCount += 1;
       this.setState({
         playerStats: playerUpdate,
@@ -333,8 +345,12 @@ class GameBoardController extends React.Component{
     //Return Logic
     return(
       <React.Fragment>
-        <CustomModal show={this.state.showLevelUp} handleClose={this.modalHideLevelUp}>{/* ANON function to prevent errors due to scope of "this" seeing other component */}
+        <CustomModal show={this.state.showLevelUp} handleClose={() => this.modalHideLevelUp()}>{/* ANON function to prevent errors due to scope of "this" seeing other component */}
           <CharacterLevelUp character={this.state.playerStats} statPicker={(stat) => this.levelUpStat(stat)} />
+        </CustomModal>
+        <CustomModal show={this.state.showGameOver} handleClose={() => this.modalHideGameOver()}>
+          <h1>GAME OVER</h1>
+          <button onClick={() => this.modalHideGameOver()}>Restart Floor</button>
         </CustomModal>
         <div style={this.styles.tables.vertical}>
           <div style={{...tablePosition(1, 1), ...this.styles.tables.top}}>
